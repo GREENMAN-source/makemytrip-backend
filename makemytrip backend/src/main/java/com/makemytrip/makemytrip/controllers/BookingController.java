@@ -18,14 +18,30 @@ public class BookingController {
     // Get trips for the dashboard
     @GetMapping("/user/{userId}")
     public List<Booking> getUserBookings(@PathVariable String userId) {
-        return bookingRepository.findByUserId(userId);
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+        
+        // --- AI NORMALIZATION ENGINE ---
+        // This ensures the frontend AI always matches Kerala to Kochi assets
+        if (bookings != null) {
+            for (Booking booking : bookings) {
+                if (booking.getTargetName() != null) {
+                    String nameLower = booking.getTargetName().toLowerCase();
+                    
+                    // If user booked "Kerala", we append "kochi" so the frontend AI recognizes it
+                    if (nameLower.contains("kerala") && !nameLower.contains("kochi")) {
+                        booking.setTargetName(booking.getTargetName() + " kochi");
+                    }
+                }
+            }
+        }
+        return bookings;
     }
 
     // Save a new trip (from the Interactive Selection modal)
     @PostMapping
     public Booking createBooking(@RequestBody Booking booking) {
         booking.setCreatedAt(String.valueOf(System.currentTimeMillis()));
-        booking.setRefundStatus("ACTIVE"); // Default status for new trips
+        booking.setRefundStatus("ACTIVE"); 
         return bookingRepository.save(booking);
     }
 
