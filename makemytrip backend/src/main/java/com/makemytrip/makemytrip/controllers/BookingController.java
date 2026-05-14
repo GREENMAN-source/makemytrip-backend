@@ -15,29 +15,38 @@ public class BookingController {
     @Autowired
     private BookingRepository bookingRepository;
 
-    // Get trips for the dashboard
     @GetMapping("/user/{userId}")
     public List<Booking> getUserBookings(@PathVariable String userId) {
         List<Booking> bookings = bookingRepository.findByUserId(userId);
         
-        // --- AI NORMALIZATION ENGINE ---
-        // This ensures the frontend AI always matches Kerala to Kochi assets
         if (bookings != null) {
             for (Booking booking : bookings) {
-                if (booking.getTargetName() != null) {
-                    String nameLower = booking.getTargetName().toLowerCase();
+                // Use the alias method getTargetName() which points to serviceId
+                String fullName = booking.getTargetName(); 
+                
+                if (fullName != null && fullName.contains(" to ")) {
+                    // UNIVERSAL STRIPPER: 
+                    // Splits "AnyCity to DestinationCity" and takes only "DestinationCity"
+                    String[] parts = fullName.split("(?i) to "); // (?i) makes it case-insensitive
+                    String destination = parts[parts.length - 1].trim();
                     
-                    // If user booked "Kerala", we append "kochi" so the frontend AI recognizes it
-                    if (nameLower.contains("kerala") && !nameLower.contains("kochi")) {
-                        booking.setTargetName(booking.getTargetName() + " kochi");
-                    }
+                    // Update the object with ONLY the destination
+                    booking.setTargetName(destination);
+                }
+
+                // AI ASSET MAPPING:
+                // Ensure unknown cities map to your frontend images/assets
+                String destinationLower = booking.getTargetName().toLowerCase();
+                if (destinationLower.contains("colcatta") || destinationLower.contains("kolkata")) {
+                    booking.setTargetName("Kolkata delhi"); // Maps to Delhi assets
+                } else if (destinationLower.contains("kerala") && !destinationLower.contains("kochi")) {
+                    booking.setTargetName("Kerala kochi"); // Maps to Kochi assets
                 }
             }
         }
         return bookings;
     }
 
-    // Save a new trip (from the Interactive Selection modal)
     @PostMapping
     public Booking createBooking(@RequestBody Booking booking) {
         booking.setCreatedAt(String.valueOf(System.currentTimeMillis()));
@@ -45,7 +54,6 @@ public class BookingController {
         return bookingRepository.save(booking);
     }
 
-    // Task 1: Handle Cancellation & 50% Refund
     @PostMapping("/cancel/{id}")
     public Booking cancelBooking(@PathVariable String id, @RequestParam String reason) {
         Booking booking = bookingRepository.findById(id).orElse(null);
