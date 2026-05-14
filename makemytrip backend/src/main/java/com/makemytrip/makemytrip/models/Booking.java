@@ -20,6 +20,17 @@ public class Booking {
     
     public Booking() {}
 
+    // --- FRONTEND COMPATIBILITY ALIAS LAYER ---
+    // This allows the Controller and Frontend to read 'targetName' smoothly 
+    // by pointing it directly to your existing database 'serviceId' column.
+    public String getTargetName() { 
+        return this.serviceId; 
+    }
+    
+    public void setTargetName(String targetName) { 
+        this.serviceId = targetName; 
+    }
+
     // --- GETTERS & SETTERS ---
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
