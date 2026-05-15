@@ -8,8 +8,8 @@ public class Hotel {
     @Id
     private String _id;
     private String hotelName;
-    private String location;       // e.g., "Goa", "Chennai"
-    private String category;       // e.g., "Beach", "Luxury" <--- ADDED THIS
+    private String location;       // e.g., "Goa", "Chennai", "Kolkata"
+    private String category;       // e.g., "Beach", "Luxury", "Budget"
     private double pricePerNight;
     private int availableRooms;
     private String amenities;
