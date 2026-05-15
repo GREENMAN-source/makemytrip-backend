@@ -23,13 +23,23 @@ public class Hotel {
         this._id = id;
     }
 
-    public String getHotelName() {
+    // --- REVERTED TO YOUR ORIGINAL LOWERCASE NAMES TO FIX THE BUILD ERROR ---
+    public String gethotelName() {
         return hotelName;
     }
 
-    public void setHotelName(String hotelName) {
+    public void sethotelName(String hotelName) {
         this.hotelName = hotelName;
     }
+
+    public String getamenities() {
+        return amenities;
+    }
+
+    public void setamenities(String amenities) {
+        this.amenities = amenities;
+    }
+    // ------------------------------------------------------------------------
 
     public String getLocation() {
         return location;
@@ -61,13 +71,5 @@ public class Hotel {
 
     public void setPricePerNight(double pricePerNight) {
         this.pricePerNight = pricePerNight;
-    }
-
-    public String getAmenities() {
-        return amenities;
-    }
-
-    public void setAmenities(String amenities) {
-        this.amenities = amenities;
     }
 }
