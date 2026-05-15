@@ -1,4 +1,5 @@
 package com.makemytrip.makemytrip.models;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,10 +8,12 @@ public class Hotel {
     @Id
     private String _id;
     private String hotelName;
-    private String location;
+    private String location;       // e.g., "Goa", "Chennai"
+    private String category;       // e.g., "Beach", "Luxury" <--- ADDED THIS
     private double pricePerNight;
     private int availableRooms;
     private String amenities;
+
     // Getters and Setters
     public String getId() {
         return _id;
@@ -20,19 +23,11 @@ public class Hotel {
         this._id = id;
     }
 
-    public void setamenities(String amenities) {
-        this.amenities = amenities;
-    }
-
-    public String getamenities() {
-        return amenities;
-    }
-
-    public String gethotelName() {
+    public String getHotelName() {
         return hotelName;
     }
 
-    public void sethotelName(String hotelName) {
+    public void setHotelName(String hotelName) {
         this.hotelName = hotelName;
     }
 
@@ -42,6 +37,14 @@ public class Hotel {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public int getAvailableRooms() {
@@ -58,5 +61,13 @@ public class Hotel {
 
     public void setPricePerNight(double pricePerNight) {
         this.pricePerNight = pricePerNight;
+    }
+
+    public String getAmenities() {
+        return amenities;
+    }
+
+    public void setAmenities(String amenities) {
+        this.amenities = amenities;
     }
 }
